@@ -11,7 +11,6 @@ impl fmt::Display for MyError {
             MyError::Io(cause) => write!(f, "I/O Error: {}", cause),
             MyError::Num(cause) => write!(f, "Parse Error: {}", cause),
         }
-        
     }
 }
 
@@ -19,7 +18,11 @@ fn get_int_from_file() -> Result<i32, MyError> {
     let path = "number.txt";
     let num_str = std::fs::read_to_string(path).map_err(|e| MyError::Io(e))?;
 
-    num_str.trim().parse::<i32>().map(|t| t * 2).map_err(|e| MyError::Num(e))
+    num_str
+        .trim()
+        .parse::<i32>()
+        .map(|t| t * 2)
+        .map_err(|e| MyError::Num(e))
 }
 
 fn main() {
@@ -28,6 +31,6 @@ fn main() {
         Err(e) => match e {
             MyError::Io(cause) => println!("I/O Error: {}", cause),
             MyError::Num(cause) => println!("Parse Error: {}", cause),
-        } 
+        },
     }
 }
